@@ -1,0 +1,101 @@
+{% extends 'base.html' %} {% block content %}
+
+<form action="" class="mt-3" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label class="form-label">Book Name</label>
+    <input
+      type="text"
+      class="form-control"
+      name="book_name"
+      id="bookname"
+      value="{{book.book_name}}"
+    />
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Author</label>
+    <input
+      type="text"
+      class="form-control"
+      name="book_author"
+      id="bookauthor"
+      value="{{book.book_author}}"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea name="book_description" class="form-control" id="bookdescription">
+{{book.book_description}}</textarea
+    >
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    <input
+      type="text"
+      name="book_category"
+      class="form-control"
+      id="category"
+      value="{{book.book_category}}"
+    />
+  </div>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Page Count</label>
+      <input
+        type="text"
+        name="book_pages"
+        class="form-control"
+        id="bookpages"
+        value="{{book.book_pages}}"
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Publisher</label>
+      <input
+        type="text"
+        name="book_publisher"
+        class="form-control"
+        id="bookpublisher"
+        value="{{book.book_publisher}}"
+      />
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Avilable copies</label>
+      <input
+        type="text"
+        name="book_copies"
+        class="form-control"
+        id="bookcount"
+        value="{{book.book_copies}}"
+      />
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Price</label>
+      <input
+        type="text"
+        name="book_price"
+        class="form-control"
+        id="price"
+        value="{{book.book_price}}"
+      />
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Upload Cover Photo</label>
+    <input
+      class="form-control form-control-lg"
+      id="img"
+      name="book_image"
+      type="file"
+      value="/media/{{book.book_image}}"
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+
+{% endblock content %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row">
+  <div class="col-8">
+  {%for item in items %}
+  
+    <div class="card mb-3 mt-3" style="max-width: 540px">
+      <div class="row no-gutters">
+        <div class="col-md-4">
+          <img
+            src="/media/{{ item.book.book_image }}"
+            class="card-img"
+            alt="{{ item.book.book_name }}"
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.book.book_name }}</h5>
+            <p class="card-text">
+              <small class="text-muted">{{ item.book.book_author }}</small>
+            </p>
+            <p class="card-text">&#8377;{{ item.book.book_price }}</p>
+            <a href="/delete_cart/{{item.cart_id}}" class="btn btn-warning">Remove</a>
+          </div>
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+    </div>
+    <div class="col-4">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Cart Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Total Price</th>
+            <td>&#8377;{{ total_amount }}</td>
+            <!-- Fixed this line -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% endblock content %}
+</div>

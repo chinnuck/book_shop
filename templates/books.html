@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .image-wrapper {
+    height: 180px;
+  }
+  .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .card {
+    transition: all 0.3s;
+  }
+  .card:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+  .btn-price {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+</style>
+
+<div class="row g-4 mt-5">
+  {% for book in books %}
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+    <div class="card">
+      <div class="image-wrapper border-primary">
+        <img
+          src="/media/{{ book.book_image}}"
+          class="card-img-top"
+          alt="{{book.book_name}}"
+        />
+      </div>
+      <div class="card-body">
+        <h6 class="card-title">{{book.book_name}}</h6>
+        <!-- <p class="blockquote-footer mt-2">{{book.book_author}}</p> -->
+        <!-- <p><mark>{{book.book_category}}</mark></p> -->
+        <p class="card-text btn-price btn btn-warning btn-sm">
+          &#8377; {{book.book_price}}
+        </p>
+        <div class="text-center">
+          <a href="/addcart/{{book.id}}" class="btn btn-warning">Add to cart</a>
+          <a href="/book/{{book.id}}" class="btn btn-primary text-center"
+            >View More</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock content %}

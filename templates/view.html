@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block content %}
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Book Id</th>
+        <th scope="col">Book Name</th>
+        <th scope="col">Image</th>
+        <th scope="col">Author</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Price</th>
+        <th scope="col">Page count</th>
+        <th scope="col">Available Copies</th>
+        <th scope="col">Publisher</th>
+        <th scope="col">manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books%}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{book.id}}</td>
+        <td>{{book.book_name}}</td>
+        <td><img src="/media/{{book.book_image}}" class="img-thumbnail" /></td>
+        <td>{{book.book_author}}</td>
+        <td>{{book.book_description}}</td>
+        <td>{{book.book_category}}</td>
+        <td>{{book.book_price}}</td>
+        <td>{{book.book_pages}}</td>
+        <td>{{book.book_copies}}</td>
+        <td>{{book.book_publisher}}</td>
+        <td>
+          <a href="/update/{{book.id}}" class="btn btn-sm d-inline btn-warning"
+            >Edit</a
+          ><a href="/delete/{{book.id}}" class="btn btn-sm btn-danger d-inline"
+            >Delete</a
+          >
+        </td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
