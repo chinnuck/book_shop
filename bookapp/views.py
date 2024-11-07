@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Book
-from .models import Cart
+from .models import Cart, User
 import os
+from .form import SearchForm
 
 
 # Create your views here.
@@ -59,8 +60,9 @@ def update(request, id):
         return render(request, 'update.html', {'book':book})
     
 def books(request):
+   
     books = Book.objects.all()
-    return render(request, 'books.html', {'books':books})
+    return render(request, 'books.html', {'books': books})
 
 def book(request, id):
     book = Book.objects.get(id=id)
@@ -72,18 +74,67 @@ def delete(request, id):
     return redirect('/view')
 
 def add_to_cart(request, id):
-    cart_obj = Cart()
-    cart_obj.book = Book.objects.get(id=id)
-    cart_obj.save()
-    return redirect('/books')
+    if 'name' in request.session:
+        cart_obj = Cart()
+        cart_obj.book = Book.objects.get(id=id)
+        cart_obj.save()
+        return redirect('/books')
+    else:
+        return redirect('/login')
 
 def view_cart(request):
-    items = Cart.objects.all()
-    total_amount = sum(item.book.book_price for item in items)  # Calculate total amount
-    return render(request, 'cart.html',{'items':items, 'total_amount':total_amount})
+    if 'name' in request.session:
+        items = Cart.objects.all()
+        total_amount = sum(item.book.book_price for item in items)  # Calculate total amount
+        return render(request, 'cart.html',{'items':items, 'total_amount':total_amount})
+    else:
+        return redirect('/login')
 
 def delete_cart(request, id):
     cart = Cart.objects.get(cart_id=id)
     cart.delete()
     return redirect('/cart')
 
+
+def login(request):
+    if request.method == 'POST':
+        user_name = request.POST.get('username')
+        password = request.POST.get('password')
+        userdata = User.objects.filter(user_name=user_name, user_password=password)
+        if userdata:
+            request.session['name'] = user_name
+            return redirect('/home')
+    else:
+        return render(request , 'login.html')
+
+
+def register(request):
+    if request.method == 'POST':
+        userobj = User()
+        userobj.user_name = request.POST.get('username')
+        userobj.user_email = request.POST.get('useremail')
+        userobj.user_phone = request.POST.get('userphone')
+        userobj.user_password = request.POST.get('password')
+        userobj.save()
+        return redirect('/home')
+    else:
+        return render(request, 'register.html')
+    
+def logout(request):
+    if 'name' in request.session:
+        del request.session['name']
+    return render(request, 'home.html')
+
+def search(request):
+    form = SearchForm()
+    results = []
+    
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Book.objects.filter(book_name__icontains=query)  # Search in title
+            # results = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+
+    return render(request, 'books.html', {'books':results})
+    # return redirect(request, 'books.html', {'form': form, 'books': results})
